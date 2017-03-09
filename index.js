@@ -5,7 +5,15 @@ var defaults = require('lodash.defaults');
 // Gets, sets, syncs route state. Does not actually execute app flows based on route changes.
 // That's followRoute's job.
 
-function RouteState({followRoute, windowObject}) {
+function RouteState(opts) {
+  var followRoute;
+  var windowObject;
+
+  if (opts) {
+    followRoute = opts.followRoute;
+    windowObject = opts.windowObject;
+  }
+
   windowObject.onhashchange = routeFromHash;
 
   return {
