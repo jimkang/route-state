@@ -21,5 +21,8 @@
     "eslint": "^3.6.1",
     "tape": "^4.6.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash.clonedeep": "^4.5.0",
+    "lodash.defaults": "^4.2.0"
+  }
 }
