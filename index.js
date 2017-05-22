@@ -18,7 +18,8 @@ function RouteState(opts) {
 
   return {
     addToRoute: addToRoute,
-    routeFromHash: routeFromHash
+    routeFromHash: routeFromHash,
+    unpackEncodedRoute: unpackEncodedRoute
   };
 
   function routeFromHash() {
@@ -41,6 +42,12 @@ function RouteState(opts) {
       windowObject.location.pathname + '#' + qs.stringify(routeDict);
     // Sync URL without triggering onhashchange.
     windowObject.history.pushState(null, null, updatedURL);
+  }
+
+  function unpackEncodedRoute(encodedStateFromRedirect) {
+    var routeDict =  qs.parse(decodeURIComponent(encodedStateFromRedirect));
+    syncHashToRoute(routeDict);
+    followRoute(routeDict);
   }
 }
 
