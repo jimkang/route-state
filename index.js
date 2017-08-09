@@ -18,6 +18,7 @@ function RouteState(opts) {
 
   return {
     addToRoute: addToRoute,
+    overwriteRouteEntirely: overwriteRouteEntirely,
     routeFromHash: routeFromHash,
     unpackEncodedRoute: unpackEncodedRoute
   };
@@ -35,6 +36,11 @@ function RouteState(opts) {
     var routeDict = defaults(cloneDeep(updateDict), getRouteFromHash());
     syncHashToRoute(routeDict);
     followRoute(routeDict);
+  }
+
+  function overwriteRouteEntirely(newDict) {
+    syncHashToRoute(newDict);
+    followRoute(newDict);
   }
 
   function syncHashToRoute(routeDict) {
