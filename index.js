@@ -19,7 +19,7 @@ function RouteState({ followRoute, windowObject }) {
   };
 
   function routeFromHash() {
-    followRoute(getRouteFromHash());
+    followRoute(getRouteFromHash(), ephemeralDict);
   }
 
   function getRouteFromHash() {
