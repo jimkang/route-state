@@ -32,10 +32,12 @@ function RouteState(opts) {
     return qs.parse(windowObject.location.hash.slice(1));
   }
 
-  function addToRoute(updateDict) {
+  function addToRoute(updateDict, shouldFollowNewRoute = true) {
     var routeDict = defaults(cloneDeep(updateDict), getRouteFromHash());
     syncHashToRoute(routeDict);
-    followRoute(routeDict);
+    if (shouldFollowNewRoute) {
+      followRoute(routeDict);
+    }
   }
 
   function overwriteRouteEntirely(newDict) {
