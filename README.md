@@ -2,6 +2,7 @@ route-state
 ==================
 
 Gets, sets, and syncs state from the URL hash and an internal dictionary. Calls your callback when it changes.
+This is a way of keeping as much of your app state in the URL hash as possible, while keeping your app in sync with it and the other way around.
 
 Installation
 ------------
@@ -14,7 +15,7 @@ Usage
     var RouteState = require('route-state');
 
     var routeState = RouteState({
-      followRoute: followRoute,
+      followRoute,
       windowObject: window  
     });
 
@@ -25,14 +26,20 @@ Usage
       routeState.addToRoute({trackURI: uri});
     }
 
-    function followRoute(routeDict) {
+    function followRoute(routeDict, ephemeralDict) {
       if (routeDict.remix && routeDict.trackURI) {
     	runRandomClipFlow(routeDict.trackURI);
       }
       else if (routeDict.trackURI) {
        runSampleFlow(routeDict.trackURI);
       }
+
+      if (ephemeralDict.buffer) {
+        // Play buffer or something
+      }
     }
+
+The `updateEphemeralState` method is like `addToRoute` except it does not update (or draw from) the hash. It's ideal for storing too-large things like buffers.
 
 Tests
 -----

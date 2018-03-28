@@ -4,6 +4,6 @@ test:
 pushall:
 	git push origin master && npm publish
 
-lint:
-	./node_modules/.bin/eslint .
+prettier:
+	prettier --single-quote --write "**/*.js"
 
