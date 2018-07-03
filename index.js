@@ -15,7 +15,8 @@ function RouteState({ followRoute, windowObject }) {
     updateEphemeralState,
     overwriteRouteEntirely,
     routeFromHash,
-    unpackEncodedRoute
+    unpackEncodedRoute,
+    getRouteFromHash
   };
 
   function routeFromHash() {
