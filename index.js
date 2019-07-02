@@ -12,6 +12,7 @@ function RouteState({ followRoute, windowObject }) {
 
   return {
     addToRoute,
+    removeFromRoute,
     updateEphemeralState,
     overwriteRouteEntirely,
     routeFromHash,
@@ -30,6 +31,15 @@ function RouteState({ followRoute, windowObject }) {
 
   function addToRoute(updateDict, shouldFollowNewRoute = true) {
     var routeDict = defaults(cloneDeep(updateDict), getRouteFromHash());
+    syncHashToRoute(routeDict);
+    if (shouldFollowNewRoute) {
+      followRoute(routeDict, ephemeralDict);
+    }
+  }
+
+  function removeFromRoute(key, shouldFollowNewRoute = true) {
+    var routeDict = getRouteFromHash();
+    delete routeDict[key];
     syncHashToRoute(routeDict);
     if (shouldFollowNewRoute) {
       followRoute(routeDict, ephemeralDict);
