@@ -41,6 +41,8 @@ Usage
 
 The `updateEphemeralState` method is like `addToRoute` except it does not update (or draw from) the hash. It's ideal for storing too-large things like buffers.
 
+You can pass an array in `propsToCoerceToBool` in the constructor to have it convert properties with values like 'yes' or 'no' to boolean `true` and `false` when parsing from the hash and converting `true` and `false` in the in-memory state to 'yes and 'no' when writing back to the hash.
+
 Tests
 -----
 

@@ -5,8 +5,11 @@ var defaults = require('lodash.defaults');
 // Gets, sets, syncs route state. Does not actually execute app flows based on route changes.
 // That's followRoute's job.
 
-function RouteState({ followRoute, windowObject }) {
+function RouteState({ followRoute, windowObject, propsToCoerceToBool }) {
   var ephemeralDict = {}; // This is the stuff that won't get synced to the hash.
+  if (!propsToCoerceToBool) {
+    propsToCoerceToBool = [];
+  }
 
   windowObject.onhashchange = routeFromHash;
 
@@ -26,7 +29,20 @@ function RouteState({ followRoute, windowObject }) {
 
   function getRouteFromHash() {
     // Skip the # part of the hash.
-    return qs.parse(windowObject.location.hash.slice(1));
+    var dict = qs.parse(windowObject.location.hash.slice(1));
+    for (var i = 0; i < propsToCoerceToBool.length; ++i) {
+      const prop = propsToCoerceToBool[i];
+      let val = dict[prop];
+      if (val === 'yes') {
+        val = true;
+      } else if (val == 'no') {
+        val = false;
+      } else {
+        val = val ? true : false;
+      }
+      dict[prop] = val;
+    }
+    return dict;
   }
 
   function addToRoute(updateDict, shouldFollowNewRoute = true) {
@@ -62,13 +78,24 @@ function RouteState({ followRoute, windowObject }) {
   }
 
   function syncHashToRoute(routeDict) {
+    var dictCopy = cloneDeep(routeDict);
+    for (var i = 0; i < propsToCoerceToBool.length; ++i) {
+      const prop = propsToCoerceToBool[i];
+      let val = dictCopy[prop];
+      if (val) {
+        val = 'yes';
+      } else {
+        val = 'no';
+      }
+      dictCopy[prop] = val;
+    }
     var updatedURL =
       windowObject.location.protocol +
       '//' +
       windowObject.location.host +
       windowObject.location.pathname +
       '#' +
-      qs.stringify(routeDict);
+      qs.stringify(dictCopy);
     // Sync URL without triggering onhashchange.
     windowObject.history.pushState(null, null, updatedURL);
   }
